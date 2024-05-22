@@ -5,6 +5,7 @@ using UnityEngine;
 namespace Survivors
 {
     [RequireComponent(typeof(Rigidbody2D))]
+    [RequireComponent(typeof(Animator))]
     public class PlayerController : MonoBehaviour
     {
         public float MoveSpeed = 1f;
@@ -13,6 +14,7 @@ namespace Survivors
         private SurvivorsControls survivorsControls;
         private Vector2 currentInput;
         private Rigidbody2D rBody;
+        private Animator animator;
         private Vector2 velocity = Vector2.zero;
 
         private void Awake()
@@ -20,6 +22,7 @@ namespace Survivors
             survivorsControls = new SurvivorsControls();
             survivorsControls.Player.Enable();
             rBody = GetComponent<Rigidbody2D>();
+            animator = GetComponent<Animator>();
         }
 
         private void Start()
@@ -34,10 +37,10 @@ namespace Survivors
 
         private void FixedUpdate()
         {
-#region INPUT_HANDLING
             var targetVelocity = currentInput * MoveSpeed;
             rBody.velocity = Vector2.SmoothDamp(rBody.velocity, targetVelocity, ref velocity, MoveSmoothing);
-#endregion
+            animator.SetFloat("HorizontalAxis", rBody.velocity.x);
+            animator.SetFloat("VerticalAxis", rBody.velocity.y);
         }
     }
 }
