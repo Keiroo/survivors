@@ -1,0 +1,55 @@
+using System.Collections.Generic;
+using Unity.Entities;
+using Unity.Mathematics;
+using Unity.Transforms;
+using UnityEngine;
+
+namespace Survivors
+{
+    public partial class EnemySpawnerSystem : SystemBase
+    {
+        private EnemySpawnerComponent enemySpawnerComponent;
+        private EnemyListComponent enemyListComponent;
+        private Entity enemySpawnerEntity;
+        private float nextSpawnTime;
+
+
+        protected override void OnCreate()
+        {
+        }
+
+        protected override void OnUpdate()
+        {
+            if (!SystemAPI.TryGetSingletonEntity<EnemySpawnerComponent>(out enemySpawnerEntity))
+                return;
+
+            enemySpawnerComponent = EntityManager.GetComponentData<EnemySpawnerComponent>(enemySpawnerEntity);
+            enemyListComponent = EntityManager.GetComponentObject<EnemyListComponent>(enemySpawnerEntity);
+
+            if (SystemAPI.Time.ElapsedTime > nextSpawnTime)
+                SpawnEnemy();
+        }
+
+        private void SpawnEnemy()
+        {
+            var level = 0;
+            var availableEnemies = new List<EnemyData>();
+
+            foreach (var enemy in enemyListComponent.Enemies)
+                if (enemy.SpawnLevel == level)
+                    availableEnemies.Add(enemy);
+
+            var index = 0;
+            var newEnemy = EntityManager.Instantiate(availableEnemies[index].Prefab);
+            EntityManager.SetComponentData(newEnemy, new LocalTransform
+            {
+                Position = float3.zero,
+                Rotation = Quaternion.identity,
+                Scale = 1
+            });
+
+
+            nextSpawnTime = (float)SystemAPI.Time.ElapsedTime + enemySpawnerComponent.SpawnInterval;
+        }
+    }
+}
