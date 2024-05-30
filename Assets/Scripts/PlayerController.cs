@@ -37,10 +37,10 @@ namespace Survivors
 
         private void FixedUpdate()
         {
-            var targetVelocity = currentInput * MoveSpeed;
-            rBody.velocity = Vector2.SmoothDamp(rBody.velocity, targetVelocity, ref velocity, MoveSmoothing);
-            animator.SetFloat("HorizontalAxis", rBody.velocity.x);
-            animator.SetFloat("VerticalAxis", rBody.velocity.y);
+            // var targetVelocity = currentInput * MoveSpeed;
+            // rBody.velocity = Vector2.SmoothDamp(rBody.velocity, targetVelocity, ref velocity, MoveSmoothing);
+            // animator.SetFloat("HorizontalAxis", rBody.velocity.x);
+            // animator.SetFloat("VerticalAxis", rBody.velocity.y);
         }
     }
 }

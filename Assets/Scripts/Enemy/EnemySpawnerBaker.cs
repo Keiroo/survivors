@@ -1,7 +1,5 @@
-using System.Collections;
 using System.Collections.Generic;
 using Unity.Entities;
-using UnityEngine;
 
 namespace Survivors
 {
@@ -14,7 +12,8 @@ namespace Survivors
 
             AddComponent(enemySpawnerAuthoring, new EnemySpawnerComponent
             {
-                SpawnInterval = authoring.SpawnInterval
+                SpawnInterval = authoring.SpawnInterval,
+                CameraSize = authoring.CameraSize,
             });
 
             foreach (var enemy in authoring.EnemyScriptables)
