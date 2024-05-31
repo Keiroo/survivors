@@ -50,6 +50,12 @@ namespace Survivors
                 Rotation = Quaternion.identity,
                 Scale = 1
             });
+            EntityManager.AddComponentData(newEnemy, new EnemyComponent 
+            { 
+                CurrentHealth = availableEnemies[index].Health,
+                MoveSpeed = availableEnemies[index].MoveSpeed,
+                Damage = availableEnemies[index].Damage
+            });
 
             nextSpawnTime = (float)SystemAPI.Time.ElapsedTime + enemySpawnerComponent.SpawnInterval;
         }

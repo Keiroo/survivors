@@ -16,4 +16,4 @@ MonoBehaviour:
   SpawnLevel: 0
   Health: 5
   Damage: 1
-  MoveSpeed: 1
+  MoveSpeed: 0.8

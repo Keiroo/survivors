@@ -2,11 +2,10 @@ using Unity.Entities;
 
 namespace Survivors
 {
-    public partial struct EnemyAISystem : ISystem
+    public class EnemyComponent : IComponentData
     {
-        private EntityManager entityManager;
-        private Entity playerEntity;
-
+        public float CurrentHealth;
+        public float MoveSpeed;
+        public float Damage;
     }
-    
 }
