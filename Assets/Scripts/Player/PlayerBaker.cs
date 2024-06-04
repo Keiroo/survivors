@@ -13,17 +13,10 @@ namespace Survivors
 
             AddComponent(playerEntity, new PlayerComponent
             {
-                MoveSpeed = authoring.MoveSpeed
+                MoveSpeed = authoring.MoveSpeed,
+                ShootCooldown = authoring.ShootCooldown,
+                BulletPrefab = GetEntity(authoring.BulletPrefab, TransformUsageFlags.None),
             });
-            
-
-
-            // AddComponent(playerEntity, new LocalTransform
-            // {
-            //     Position = float3.zero,
-            //     Rotation = Quaternion.identity,
-            //     Scale = 1
-            // });
         }
     }
 }

@@ -1,7 +1,6 @@
 using Unity.Entities;
 using Unity.Mathematics;
 using Unity.Transforms;
-using UnityEngine;
 
 namespace Survivors
 {
@@ -12,6 +11,7 @@ namespace Survivors
         private Entity inputEntity;
         private PlayerComponent playerComponent;
         private InputComponent inputComponent;
+        private float NextShootTime;
 
         public void OnCreate(ref SystemState state)
         {
@@ -26,13 +26,32 @@ namespace Survivors
             playerComponent = entityManager.GetComponentData<PlayerComponent>(playerEntity);
             inputComponent = entityManager.GetComponentData<InputComponent>(inputEntity);
             Move(ref state);
+            Shoot(ref state);
         }
 
         private void Move(ref SystemState state)
         {
             var playerTransform = entityManager.GetComponentData<LocalTransform>(playerEntity);
-            playerTransform.Position += new Unity.Mathematics.float3(inputComponent.Movement * playerComponent.MoveSpeed * SystemAPI.Time.DeltaTime, 0);
+            playerTransform.Position += new float3(inputComponent.Movement * playerComponent.MoveSpeed * SystemAPI.Time.DeltaTime, 0);
             entityManager.SetComponentData(playerEntity, playerTransform);
+        }
+
+        private void Shoot(ref SystemState state)
+        {
+            if (NextShootTime < SystemAPI.Time.ElapsedTime)
+            {
+                var buffer = new EntityCommandBuffer(Unity.Collections.Allocator.Temp);
+                var bulletEntity = entityManager.Instantiate(playerComponent.BulletPrefab);
+                var bulletTransform = entityManager.GetComponentData<LocalTransform>(bulletEntity);
+                var playerTransform = entityManager.GetComponentData<LocalTransform>(playerEntity);
+                
+                bulletTransform.Position = playerTransform.Position;
+                buffer.AddComponent(bulletEntity, new BulletComponent { Speed = 2f });
+                buffer.SetComponent(bulletEntity, bulletTransform);
+                buffer.Playback(entityManager);
+
+                NextShootTime = (float)SystemAPI.Time.ElapsedTime + playerComponent.ShootCooldown;
+            }
         }
     }
 }
