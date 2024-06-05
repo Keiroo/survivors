@@ -2,10 +2,16 @@ using Unity.Collections;
 using Unity.Entities;
 using Unity.Mathematics;
 using Unity.Transforms;
-using UnityEngine;
+using Unity.Physics;
 
 namespace Survivors
 {
+    public enum CollisionLayer
+    {
+        Default = 1 << 0,
+        Enemy = 1 << 6
+    }
+
     partial struct BulletSystem : ISystem
     {
         public void OnCreate(ref SystemState state)
@@ -18,6 +24,7 @@ namespace Survivors
             NativeArray<Entity> allEntities = entityManager.GetAllEntities();
             var playerEntity = SystemAPI.GetSingletonEntity<PlayerComponent>();
             var playerTransform = entityManager.GetComponentData<LocalTransform>(playerEntity);
+            var physicsWorld = SystemAPI.GetSingleton<PhysicsWorldSingleton>();
 
             foreach (var bullet in allEntities)
             {
@@ -49,11 +56,23 @@ namespace Survivors
                     var targetTransform = entityManager.GetComponentData<LocalTransform>(bulletComponent.Target);
                     var targetVector = math.normalize(targetTransform.Position - bulletTransform.Position);
                     bulletTransform.Position += bulletComponent.Speed * SystemAPI.Time.DeltaTime * targetVector;
-                    // entityManager.SetComponentData(bullet, bulletComponent);
-                    // entityManager.SetComponentData(bullet, bulletTransform);
+
+                    var hits = new NativeList<ColliderCastHit>(Allocator.Temp);
+                    physicsWorld.SphereCastAll(bulletTransform.Position, 0.1f, float3.zero, 1f, ref hits, new CollisionFilter { BelongsTo = (uint)CollisionLayer.Default, CollidesWith = (uint)CollisionLayer.Enemy });
+
+                    foreach (var hit in hits)
+                        entityManager.SetEnabled(hit.Entity, false);
+                    // {
+                    //     entityManager.DestroyEntity(hit.Entity);
+                    //     entityManager.DestroyEntity(bullet);
+                    //     buffer.Dispose();
+                    //     return;
+                    // }
+
                     buffer.SetComponent(bullet, bulletComponent);
                     buffer.SetComponent(bullet, bulletTransform);
                     buffer.Playback(entityManager);
+                    buffer.Dispose();
                 }
             }
             

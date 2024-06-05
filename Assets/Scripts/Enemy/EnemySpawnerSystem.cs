@@ -51,7 +51,8 @@ namespace Survivors
                 Scale = 1
             });
             EntityManager.AddComponentData(newEnemy, new EnemyComponent 
-            { 
+            {
+                PrefabID = availableEnemies[index].PrefabID,
                 CurrentHealth = availableEnemies[index].Health,
                 MoveSpeed = availableEnemies[index].MoveSpeed,
                 Damage = availableEnemies[index].Damage

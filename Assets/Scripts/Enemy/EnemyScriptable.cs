@@ -6,6 +6,7 @@ namespace Survivors
     public class EnemyScriptable : ScriptableObject
     {
         public GameObject Prefab;
+        public GameObject VisualsPrefab;
         public int SpawnLevel;
         public float Health;
         public float Damage;

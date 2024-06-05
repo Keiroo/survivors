@@ -21,6 +21,7 @@ namespace Survivors
                 enemyData.Add(new EnemyData
                 {
                     Prefab = GetEntity(enemy.Prefab, TransformUsageFlags.None),
+                    PrefabID = enemy.VisualsPrefab.GetInstanceID(),
                     SpawnLevel = enemy.SpawnLevel,
                     Health = enemy.Health,
                     Damage = enemy.Damage,

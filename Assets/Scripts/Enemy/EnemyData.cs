@@ -7,6 +7,7 @@ namespace Survivors
     public struct EnemyData
     {
         public Entity Prefab;
+        public int PrefabID;
         public int SpawnLevel;
         public float Health;
         public float Damage;
