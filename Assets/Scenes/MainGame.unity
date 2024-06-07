@@ -234,7 +234,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9f11f4ac227fa314495230b6ebd953df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Player: {fileID: 1758988043}
 --- !u!4 &216620575
 Transform:
   m_ObjectHideFlags: 0
@@ -1306,6 +1305,6 @@ SceneRoots:
   - {fileID: 224379043}
   - {fileID: 24802502}
   - {fileID: 1490479959}
-  - {fileID: 1758988045}
   - {fileID: 928453756}
+  - {fileID: 1758988045}
   - {fileID: 2103747498}

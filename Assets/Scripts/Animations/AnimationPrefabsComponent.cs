@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Survivors
 {
-    public class AnimationPrefabs : IComponentData
+    public class AnimationPrefabsComponent : IComponentData
     {
         public GameObject Player;
         public GameObject[] Enemies;

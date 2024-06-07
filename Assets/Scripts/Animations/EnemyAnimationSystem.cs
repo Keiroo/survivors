@@ -12,7 +12,7 @@ namespace Survivors
 
         private void OnUpdate(ref SystemState state)
         {
-            if (!SystemAPI.ManagedAPI.TryGetSingleton(out AnimationPrefabs animationPrefabs))
+            if (!SystemAPI.ManagedAPI.TryGetSingleton(out AnimationPrefabsComponent animationPrefabs))
                 return;
 
             var buffer = new EntityCommandBuffer(Allocator.Temp);

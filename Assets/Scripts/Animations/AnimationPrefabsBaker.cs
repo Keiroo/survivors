@@ -8,7 +8,7 @@ namespace Survivors
         {
             var playerEntity = GetEntity(TransformUsageFlags.None);
 
-            AddComponentObject(playerEntity, new AnimationPrefabs
+            AddComponentObject(playerEntity, new AnimationPrefabsComponent
             {
                 Player = authoring.Player,
                 Enemies = authoring.Enemies

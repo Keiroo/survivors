@@ -8,10 +8,16 @@ namespace Survivors
     public partial struct PlayerAnimationSystem : ISystem
     {
         private EntityManager entityManager;
+        private bool firstPlayerFound;
+
+        void OnCreate(ref SystemState state)
+        {
+            firstPlayerFound = false;
+        }
 
         private void OnUpdate(ref SystemState state)
         {
-            if (!SystemAPI.ManagedAPI.TryGetSingleton(out AnimationPrefabs animationPrefabs))
+            if (!SystemAPI.ManagedAPI.TryGetSingleton(out AnimationPrefabsComponent animationPrefabs))
                 return;
 
             var buffer = new EntityCommandBuffer(Allocator.Temp);
@@ -23,6 +29,12 @@ namespace Survivors
                 {
                     var playerVisuals = Object.Instantiate(animationPrefabs.Player);
                     buffer.AddComponent(entity, new VisualsReferenceComponent { GameObject = playerVisuals });
+
+                    if (!firstPlayerFound)
+                    {
+                        firstPlayerFound = true;
+                        GameManager.PlayerInstance = playerVisuals;
+                    }
                 }
                 else 
                 {
