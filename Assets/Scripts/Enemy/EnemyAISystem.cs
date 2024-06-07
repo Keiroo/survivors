@@ -17,7 +17,7 @@ namespace Survivors
             foreach (var (enemyComponent, transformComponent) in SystemAPI.Query<EnemyComponent, RefRW<LocalTransform>>())
             {
                 var direction = entityManager.GetComponentData<LocalTransform>(playerEntity).Position - transformComponent.ValueRO.Position;
-                transformComponent.ValueRW.Position += math.normalize(direction) * enemyComponent.MoveSpeed * SystemAPI.Time.DeltaTime;
+                transformComponent.ValueRW.Position += enemyComponent.MoveSpeed * SystemAPI.Time.DeltaTime * math.normalize(direction);
             }
         }
     }

@@ -46,7 +46,7 @@ namespace Survivors
                 var playerTransform = entityManager.GetComponentData<LocalTransform>(playerEntity);
                 
                 bulletTransform.Position = playerTransform.Position;
-                buffer.AddComponent(bulletEntity, new BulletComponent { Speed = 2f });
+                buffer.AddComponent(bulletEntity, new BulletComponent { Speed = 2f, Direction = float3.zero, LifeTime = 0f, MaxLifeTime = 5f });
                 buffer.SetComponent(bulletEntity, bulletTransform);
                 buffer.Playback(entityManager);
 

@@ -710,7 +710,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d981137fc9db66044ae63ac8550f8cb0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MapMargin: 5
+  MapMargin: 7
   Tiles:
   - Tile: {fileID: 11400000, guid: 29122ade78e6db44a920a7f4256a6082, type: 2}
     Weight: 1
