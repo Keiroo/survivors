@@ -63,15 +63,25 @@ namespace Survivors
 
         private float3 GetRandomEnemyPosition()
         {
+            var horizontal_spawn = random.NextBool();
             var margin = 2;
             var cameraSize = enemySpawnerComponent.CameraSize;
 
-            var x1 = random.NextFloat(-cameraSize.x - margin, -cameraSize.x);
-            var x2 = random.NextFloat(cameraSize.x + margin, cameraSize.x);
-            var y1 = random.NextFloat(-cameraSize.y - margin, -cameraSize.y);
-            var y2 = random.NextFloat(cameraSize.y + margin, cameraSize.y);
 
-            return new float3(random.NextBool() ? x1 : x2, random.NextBool() ? y1 : y2, 0);
+            if (horizontal_spawn)
+            {
+                var x1 = random.NextFloat(-cameraSize.x - margin, -cameraSize.x);
+                var x2 = random.NextFloat(cameraSize.x + margin, cameraSize.x);
+                var y = random.NextFloat(-cameraSize.y - margin, cameraSize.y + margin);
+                return new float3 (random.NextBool() ? x1 : x2, y, 0f);
+            }
+            else
+            {
+                var x = random.NextFloat(-cameraSize.x - margin, cameraSize.x + margin);
+                var y1 = random.NextFloat(-cameraSize.y - margin, -cameraSize.y);
+                var y2 = random.NextFloat(cameraSize.y + margin, cameraSize.y);
+                return new float3(x, random.NextBool() ? y1 : y2, 0f);
+            }
         }
     }
 }

@@ -217,7 +217,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MoveSpeed: 1
-  ShootCooldown: 1
+  ShootCooldown: 0.01
   BulletPrefab: {fileID: 1083862140788330030, guid: bb7391c2af442b441b57bb72a039e42f, type: 3}
 --- !u!65 &653475194
 BoxCollider:
@@ -422,7 +422,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 098f38a98a10f314ba55110081bff5e2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SpawnInterval: 1
+  SpawnInterval: 0.005
   CameraSize: {x: 4.5, y: 3}
   EnemyScriptables:
   - {fileID: 11400000, guid: ddbc0193de72dbb4bb6e644f6f1bd5e0, type: 2}
