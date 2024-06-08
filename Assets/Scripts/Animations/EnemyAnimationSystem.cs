@@ -30,7 +30,8 @@ namespace Survivors
                 else
                 {
                     var enemyVisualsReference = entityManager.GetComponentData<VisualsReferenceComponent>(entity);
-                    enemyVisualsReference.GameObject.transform.position = transform.Position;
+                    if (enemyVisualsReference.GameObject != null)
+                        enemyVisualsReference.GameObject.transform.position = transform.Position;
                 }
             }
 
