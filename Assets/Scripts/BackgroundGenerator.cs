@@ -36,6 +36,9 @@ namespace Survivors
 
         private void FixedUpdate()
         {
+            if (GameManager.PlayerInstance == null)
+                return;
+                
             var playerPos = GameManager.PlayerInstance.transform.position;
             var bounds_horizontal = new Vector2Int(Mathf.FloorToInt(playerPos.x) - MapMargin, Mathf.CeilToInt(playerPos.x) + MapMargin);
             var bounds_vertical = new Vector2Int(Mathf.FloorToInt(playerPos.y) - MapMargin, Mathf.CeilToInt(playerPos.y) + MapMargin);
