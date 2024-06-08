@@ -10,39 +10,41 @@ namespace Survivors
     [BurstCompile]
     public partial struct EnemyAISystem : ISystem
     {
+        private EntityQuery entitiesQuery;
+
+        [BurstCompile]
+        private void OnCreate(ref SystemState state)
+        {
+            entitiesQuery = new EntityQueryBuilder(Allocator.Persistent)
+                .WithAll<EnemyComponent>()
+                .WithAll<LocalTransform>()
+                .Build(ref state);
+        }
+
         [BurstCompile]
         private void OnUpdate(ref SystemState state)
         {
             var entityManager = state.EntityManager;
             var playerEntity = SystemAPI.GetSingletonEntity<PlayerComponent>();
 
-            var entitiesQuery = new EntityQueryBuilder(Allocator.TempJob)
-                .WithAll<EnemyComponent>()
-                .WithAll<LocalTransform>()
-                .Build(ref state);
-
             var entitiesArray = entitiesQuery.ToEntityArray(Allocator.TempJob);
-
             var buffers = new NativeArray<EntityCommandBuffer>(entitiesArray.Length, Allocator.TempJob);
-            for (int i = 0; i < entitiesArray.Length; i++)
-                buffers[i] = new EntityCommandBuffer(Allocator.TempJob);
-
             var handles = new NativeArray<JobHandle>(entitiesArray.Length, Allocator.TempJob);
             var enemyComponents = entitiesQuery.ToComponentDataArray<EnemyComponent>(Allocator.TempJob);
-            var transforms = entitiesQuery.ToComponentDataArray<LocalTransform>(Allocator.TempJob);
-
+            var enemyTransforms = entitiesQuery.ToComponentDataArray<LocalTransform>(Allocator.TempJob);
             var playerPosition = entityManager.GetComponentData<LocalTransform>(playerEntity).Position;
             var deltaTime = SystemAPI.Time.DeltaTime;
-
+                
             for (int i = 0; i < entitiesArray.Length; i++)
             {
+                buffers[i] = new EntityCommandBuffer(Allocator.TempJob);
                 var moveJob = new MoveJob
                 {
                     Buffer = buffers[i],
                     EnemyEntity = entitiesArray[i],
                     PlayerPosition = playerPosition,
                     EnemyComponent = enemyComponents[i],
-                    TransformComponent = transforms[i],
+                    TransformComponent = enemyTransforms[i],
                     DeltaTime = deltaTime
                 };
                 handles[i] = moveJob.Schedule();
@@ -58,7 +60,7 @@ namespace Survivors
             entitiesArray.Dispose();
             handles.Dispose();
             enemyComponents.Dispose();
-            transforms.Dispose();
+            enemyTransforms.Dispose();
         }
 
         [BurstCompile]
