@@ -48,9 +48,9 @@ namespace Survivors
             var enemyTransforms = enemiesQuery.ToComponentDataArray<LocalTransform>(Allocator.TempJob);
 
             var findTargetBuffers = new NativeArray<EntityCommandBuffer>(bulletArray.Length, Allocator.TempJob);            
-            var moveBuffers = new NativeArray<EntityCommandBuffer>(bulletArray.Length, Allocator.TempJob);            
-            var findTargetHandles = new NativeArray<JobHandle>(bulletArray.Length, Allocator.TempJob);
-            var moveHandles = new NativeArray<JobHandle>(enemyArray.Length, Allocator.TempJob);
+            var moveBuffers = new NativeArray<EntityCommandBuffer>(bulletArray.Length, Allocator.TempJob);
+            var findTargetHandles = new NativeList<JobHandle>(Allocator.TempJob);
+            var moveHandles = new NativeList<JobHandle>(Allocator.TempJob);
 
             var destroyBuffer = new EntityCommandBuffer(Allocator.TempJob);
 
@@ -69,10 +69,11 @@ namespace Survivors
                         EnemyComponents = enemyComponents,
                         EnemyTransforms = enemyTransforms
                     };
-                    findTargetHandles[i] = findTargetJob.Schedule();
+                    findTargetHandles.Add(findTargetJob.Schedule(findTargetHandles.Length > 0 ? findTargetHandles[i - 1] : default));
                 }
             }
-            JobHandle.CompleteAll(findTargetHandles);
+            var findTargetHandlesArray = findTargetHandles.ToArray(Allocator.TempJob);
+            JobHandle.CompleteAll(findTargetHandlesArray);
 
             for (int i = 0; i < bulletArray.Length; i++)
             {
@@ -112,12 +113,13 @@ namespace Survivors
                                 BulletTransform = bulletTransforms[i],
                                 DeltaTime = SystemAPI.Time.DeltaTime,
                             };
-                            moveHandles[i] = moveJob.Schedule();
+                            moveHandles.Add(moveJob.Schedule());
                         }
                     }
                 }
             }
-            JobHandle.CompleteAll(moveHandles);
+            var moveHandlesArray = moveHandles.ToArray(Allocator.TempJob);
+            JobHandle.CompleteAll(moveHandlesArray);
 
             for (int i = 0; i < findTargetBuffers.Length; i++)
             {
@@ -141,6 +143,8 @@ namespace Survivors
             moveHandles.Dispose();
             enemyComponents.Dispose();
             enemyTransforms.Dispose();
+            findTargetHandlesArray.Dispose();
+            moveHandlesArray.Dispose();
         }
 
         [BurstCompile]
