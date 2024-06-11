@@ -423,7 +423,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SpawnInterval: 0.005
-  CameraSize: {x: 4.5, y: 3}
+  CameraSize: {x: 6.5, y: 4}
+  Margin: 0
   EnemyScriptables:
   - {fileID: 11400000, guid: ddbc0193de72dbb4bb6e644f6f1bd5e0, type: 2}
 --- !u!4 &2103747498

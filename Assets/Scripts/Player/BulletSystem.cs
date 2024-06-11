@@ -6,6 +6,7 @@ using Unity.Physics;
 using UnityEngine;
 using Unity.Burst;
 using Unity.Jobs;
+using System;
 
 namespace Survivors
 {
@@ -20,9 +21,13 @@ namespace Survivors
     {
         private EntityQuery bulletsQuery;
         private EntityQuery enemiesQuery;
+        private Unity.Mathematics.Random random;
 
+        [BurstCompile]
         public void OnCreate(ref SystemState state)
         {
+            // random = new Unity.Mathematics.Random((uint)DateTimeOffset.Now.ToUnixTimeSeconds());
+            random = new Unity.Mathematics.Random((uint)DateTime.Now.Ticks);
             bulletsQuery = new EntityQueryBuilder(Allocator.Persistent)
                 .WithAll<BulletComponent>()
                 .WithAll<LocalTransform>()
@@ -36,7 +41,7 @@ namespace Survivors
 
         public void OnUpdate(ref SystemState state)
         {
-            var playerEntity = SystemAPI.GetSingletonEntity<PlayerComponent>();
+            // var playerEntity = SystemAPI.GetSingletonEntity<PlayerComponent>();
             var physicsWorld = SystemAPI.GetSingleton<PhysicsWorldSingleton>();
 
             var bulletArray = bulletsQuery.ToEntityArray(Allocator.TempJob);
@@ -59,17 +64,18 @@ namespace Survivors
                 findTargetBuffers[i] = new EntityCommandBuffer(Allocator.TempJob);
                 if (bulletComponents[i].Direction.Equals(float3.zero))
                 {
+                    var randomIndex = random.NextInt(0, enemyArray.Length);
                     var findTargetJob = new FindTargetJob
                     {
                         Buffer = findTargetBuffers[i],
                         BulletEntity = bulletArray[i],
                         BulletTransform = bulletTransforms[i],
                         BulletComponent = bulletComponents[i],
-                        EnemyArray = enemyArray,
-                        EnemyComponents = enemyComponents,
-                        EnemyTransforms = enemyTransforms
+                        EnemyComponent = enemyComponents[randomIndex],
+                        EnemyTransform = enemyTransforms[randomIndex]
                     };
-                    findTargetHandles.Add(findTargetJob.Schedule(findTargetHandles.Length > 0 ? findTargetHandles[i - 1] : default));
+                    // findTargetHandles.Add(findTargetJob.Schedule(findTargetHandles.Length > 0 ? findTargetHandles[i - 1] : default));
+                    findTargetHandles.Add(findTargetJob.Schedule());
                 }
             }
             var findTargetHandlesArray = findTargetHandles.ToArray(Allocator.TempJob);
@@ -154,6 +160,23 @@ namespace Survivors
             public Entity BulletEntity;
             public LocalTransform BulletTransform;
             public BulletComponent BulletComponent;
+            public EnemyComponent EnemyComponent;
+            public LocalTransform EnemyTransform;
+
+            public void Execute()
+            {
+                BulletComponent.Direction = math.normalize(EnemyTransform.Position - BulletTransform.Position);
+                Buffer.SetComponent(BulletEntity, BulletComponent);
+            }
+        }
+
+        [BurstCompile]
+        private struct FindClosestTargetJob : IJob
+        {
+            public EntityCommandBuffer Buffer;
+            public Entity BulletEntity;
+            public LocalTransform BulletTransform;
+            public BulletComponent BulletComponent;
             public NativeArray<Entity> EnemyArray;
             public NativeArray<EnemyComponent> EnemyComponents;
             public NativeArray<LocalTransform> EnemyTransforms;
@@ -163,6 +186,7 @@ namespace Survivors
                 var direction = float3.zero;
                 Entity currentTarget = Entity.Null;
                 var lastEnemyIndex = 0;
+
                 for (int i = 0; i < EnemyComponents.Length; i++)
                 {
                     if (currentTarget == Entity.Null)
