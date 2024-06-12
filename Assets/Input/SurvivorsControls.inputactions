@@ -72,6 +72,34 @@
                     "isPartOfComposite": true
                 }
             ]
+        },
+        {
+            "name": "Debug",
+            "id": "d0d25ff7-c6d8-4075-8999-59f91148f4e7",
+            "actions": [
+                {
+                    "name": "FpsCounterShow",
+                    "type": "Button",
+                    "id": "8237cedd-7c68-4804-99a8-4c0451cd15df",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "5d9e3d59-94a7-4621-9ef0-50861836fada",
+                    "path": "<Keyboard>/f1",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Default",
+                    "action": "FpsCounterShow",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
         }
     ],
     "controlSchemes": [

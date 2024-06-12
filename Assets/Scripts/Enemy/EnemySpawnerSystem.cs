@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using Unity.Burst;
 using Unity.Entities;
-using Unity.Jobs;
 using Unity.Mathematics;
 using Unity.Transforms;
 using UnityEngine;
@@ -35,7 +34,8 @@ namespace Survivors
             enemyListComponent = EntityManager.GetComponentObject<EnemyListComponent>(enemySpawnerEntity);
 
             if (SystemAPI.Time.ElapsedTime > nextSpawnTime)
-                SpawnEnemy();
+            for (int i = 0; i < enemySpawnerComponent.SpawnsPerCycle; i++)
+                    SpawnEnemy();
         }
 
         private void SpawnEnemy()

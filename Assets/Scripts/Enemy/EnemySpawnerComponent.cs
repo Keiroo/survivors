@@ -8,5 +8,6 @@ namespace Survivors
         public float SpawnInterval;
         public float2 CameraSize;
         public float Margin;
+        public int SpawnsPerCycle;
     }
 }
