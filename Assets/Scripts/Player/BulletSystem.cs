@@ -23,7 +23,6 @@ namespace Survivors
         private EntityQuery enemiesQuery;
         private Unity.Mathematics.Random random;
 
-        [BurstCompile]
         public void OnCreate(ref SystemState state)
         {
             // random = new Unity.Mathematics.Random((uint)DateTimeOffset.Now.ToUnixTimeSeconds());

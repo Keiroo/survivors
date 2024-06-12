@@ -14,9 +14,12 @@ namespace Survivors
         {
             if (!SystemAPI.ManagedAPI.TryGetSingleton(out AnimationPrefabsComponent animationPrefabs))
                 return;
+            if (!SystemAPI.TryGetSingletonEntity<PlayerComponent>(out var playerEntity))
+                return;
 
             var buffer = new EntityCommandBuffer(Allocator.Temp);
             entityManager = state.EntityManager;
+            var playerTransform = SystemAPI.GetComponentRO<LocalTransform>(playerEntity);
 
             foreach (var (transform, enemyComponent, entity) in SystemAPI.Query<LocalTransform, EnemyComponent>().WithEntityAccess())
             {
@@ -31,7 +34,14 @@ namespace Survivors
                 {
                     var enemyVisualsReference = entityManager.GetComponentData<VisualsReferenceComponent>(entity);
                     if (enemyVisualsReference.GameObject != null)
+                    {
                         enemyVisualsReference.GameObject.transform.position = transform.Position;
+                        if (enemyVisualsReference.GameObject.TryGetComponent<SpriteRenderer>(out var renderer))
+                        {
+                            renderer.flipX = playerTransform.ValueRO.Position.x - transform.Position.x < 0;
+                        }
+
+                    }
                 }
             }
 
