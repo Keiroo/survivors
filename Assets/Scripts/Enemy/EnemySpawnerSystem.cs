@@ -47,7 +47,7 @@ namespace Survivors
                 if (enemy.SpawnLevel == level)
                     availableEnemies.Add(enemy);
 
-            var index = 0;
+            var index = random.NextInt(0, availableEnemies.Count);
             var newEnemy = EntityManager.Instantiate(availableEnemies[index].Prefab);
             EntityManager.SetComponentData(newEnemy, new LocalTransform
             {

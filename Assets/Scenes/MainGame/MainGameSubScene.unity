@@ -155,6 +155,8 @@ MonoBehaviour:
   Player: {fileID: 1201231571257541846, guid: 528a73ff638060247be8bc910358dd65, type: 3}
   Enemies:
   - {fileID: 3756918836973194617, guid: 6743699b3de54ce44bde6c80b4eaab22, type: 3}
+  - {fileID: 6767437212261410434, guid: b97e86dc96371b941b5570766e21a614, type: 3}
+  - {fileID: 6775006426549636507, guid: b6d61724dfaae1f41aded0c7663473f9, type: 3}
 --- !u!4 &192887364
 Transform:
   m_ObjectHideFlags: 0
@@ -431,11 +433,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 098f38a98a10f314ba55110081bff5e2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SpawnInterval: 0.005
+  SpawnInterval: 0.002
   CameraSize: {x: 6.5, y: 4}
   Margin: 0
   EnemyScriptables:
   - {fileID: 11400000, guid: ddbc0193de72dbb4bb6e644f6f1bd5e0, type: 2}
+  - {fileID: 11400000, guid: fb8f3fcdd79287c4c814d19f5157cfff, type: 2}
+  - {fileID: 11400000, guid: 5948c5f48935bd343b67289b7f1e7825, type: 2}
 --- !u!4 &2103747498
 Transform:
   m_ObjectHideFlags: 0

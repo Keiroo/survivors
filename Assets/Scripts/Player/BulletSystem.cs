@@ -26,7 +26,8 @@ namespace Survivors
         public void OnCreate(ref SystemState state)
         {
             // random = new Unity.Mathematics.Random((uint)DateTimeOffset.Now.ToUnixTimeSeconds());
-            random = new Unity.Mathematics.Random((uint)DateTime.Now.Ticks);
+            // random = new Unity.Mathematics.Random((uint)DateTime.Now.Ticks);
+            random = new Unity.Mathematics.Random((uint)GetHashCode());
             bulletsQuery = new EntityQueryBuilder(Allocator.Persistent)
                 .WithAll<BulletComponent>()
                 .WithAll<LocalTransform>()
