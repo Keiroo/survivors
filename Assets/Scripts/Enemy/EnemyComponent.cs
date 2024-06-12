@@ -2,7 +2,7 @@ using Unity.Entities;
 
 namespace Survivors
 {
-    public class EnemyComponent : IComponentData
+    public struct EnemyComponent : IComponentData
     {
         public int PrefabID;
         public float CurrentHealth;

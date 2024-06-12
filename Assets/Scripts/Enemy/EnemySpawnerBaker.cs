@@ -14,6 +14,7 @@ namespace Survivors
             {
                 SpawnInterval = authoring.SpawnInterval,
                 CameraSize = authoring.CameraSize,
+                Margin = authoring.Margin,
             });
 
             foreach (var enemy in authoring.EnemyScriptables)

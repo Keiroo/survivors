@@ -8,6 +8,7 @@ namespace Survivors
     {
         public float SpawnInterval = 1f;
         public Vector2 CameraSize;
+        public float Margin;
         public List<EnemyScriptable> EnemyScriptables = new();
     }
 }

@@ -217,7 +217,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MoveSpeed: 1
-  ShootCooldown: 0.01
+  ShootCooldown: 0.002
   BulletPrefab: {fileID: 1083862140788330030, guid: bb7391c2af442b441b57bb72a039e42f, type: 3}
 --- !u!65 &653475194
 BoxCollider:
@@ -252,6 +252,7 @@ GameObject:
   - component: {fileID: 1959654704}
   - component: {fileID: 1959654703}
   - component: {fileID: 1959654702}
+  - component: {fileID: 1959654706}
   m_Layer: 0
   m_Name: MainCamera
   m_TagString: MainCamera
@@ -393,6 +394,14 @@ Transform:
   m_Children: []
   m_Father: {fileID: 653475189}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!81 &1959654706
+AudioListener:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1959654701}
+  m_Enabled: 1
 --- !u!1 &2103747496
 GameObject:
   m_ObjectHideFlags: 0
@@ -423,7 +432,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SpawnInterval: 0.005
-  CameraSize: {x: 4.5, y: 3}
+  CameraSize: {x: 6.5, y: 4}
+  Margin: 0
   EnemyScriptables:
   - {fileID: 11400000, guid: ddbc0193de72dbb4bb6e644f6f1bd5e0, type: 2}
 --- !u!4 &2103747498
