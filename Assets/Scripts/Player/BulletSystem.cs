@@ -7,6 +7,7 @@ using UnityEngine;
 using Unity.Burst;
 using Unity.Jobs;
 using System;
+using UnityEngine.SceneManagement;
 
 namespace Survivors
 {
@@ -41,6 +42,9 @@ namespace Survivors
 
         public void OnUpdate(ref SystemState state)
         {
+            if (SceneManager.GetActiveScene().buildIndex != 1)
+                return;
+                
             // var playerEntity = SystemAPI.GetSingletonEntity<PlayerComponent>();
             var physicsWorld = SystemAPI.GetSingleton<PhysicsWorldSingleton>();
 

@@ -4,6 +4,7 @@ using Unity.Entities;
 using Unity.Mathematics;
 using Unity.Transforms;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using Random = Unity.Mathematics.Random;
 
 namespace Survivors
@@ -27,6 +28,9 @@ namespace Survivors
         [BurstCompile]
         protected override void OnUpdate()
         {
+            if (SceneManager.GetActiveScene().buildIndex != 1)
+                return;
+
             if (!SystemAPI.TryGetSingletonEntity<EnemySpawnerComponent>(out enemySpawnerEntity))
                 return;
 

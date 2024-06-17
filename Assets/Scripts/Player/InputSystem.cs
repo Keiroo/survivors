@@ -1,5 +1,6 @@
 using Unity.Entities;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace Survivors
 {
@@ -18,6 +19,9 @@ namespace Survivors
 
         protected override void OnUpdate()
         {
+            if (SceneManager.GetActiveScene().buildIndex != 1)
+                return;
+
             var currentInput = survivorsControls.Player.Move.ReadValue<Vector2>();
             SystemAPI.SetSingleton(new InputComponent { Movement = currentInput });
         }

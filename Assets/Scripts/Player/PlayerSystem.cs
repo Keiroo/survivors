@@ -1,6 +1,7 @@
 using Unity.Entities;
 using Unity.Mathematics;
 using Unity.Transforms;
+using UnityEngine.SceneManagement;
 
 namespace Survivors
 {
@@ -19,6 +20,9 @@ namespace Survivors
 
         public void OnUpdate(ref SystemState state)
         {
+            if (SceneManager.GetActiveScene().buildIndex != 1)
+                return; 
+            
             entityManager = state.EntityManager;
             playerEntity = SystemAPI.GetSingletonEntity<PlayerComponent>();
             inputEntity = SystemAPI.GetSingletonEntity<InputComponent>();
