@@ -29,7 +29,8 @@ namespace Survivors
                 return;
                 
             var entityManager = state.EntityManager;
-            var playerEntity = SystemAPI.GetSingletonEntity<PlayerComponent>();
+            if (!SystemAPI.TryGetSingletonEntity<PlayerComponent>(out var playerEntity))
+                return;
 
             var entitiesArray = entitiesQuery.ToEntityArray(Allocator.TempJob);
             var buffers = new NativeArray<EntityCommandBuffer>(entitiesArray.Length, Allocator.TempJob);

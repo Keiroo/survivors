@@ -24,8 +24,10 @@ namespace Survivors
                 return; 
             
             entityManager = state.EntityManager;
-            playerEntity = SystemAPI.GetSingletonEntity<PlayerComponent>();
-            inputEntity = SystemAPI.GetSingletonEntity<InputComponent>();
+            if (!SystemAPI.TryGetSingletonEntity<PlayerComponent>(out playerEntity))
+                return;
+            if (!SystemAPI.TryGetSingletonEntity<InputComponent>(out inputEntity))
+                return;
 
             playerComponent = entityManager.GetComponentData<PlayerComponent>(playerEntity);
             inputComponent = entityManager.GetComponentData<InputComponent>(inputEntity);
