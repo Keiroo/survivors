@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Unity.Entities;
 
@@ -20,10 +21,11 @@ namespace Survivors
 
             foreach (var enemy in authoring.EnemyScriptables)
             {
+                Enum.TryParse<SurvivorsTag>(enemy.VisualsPrefab.tag, false, out var tag);
                 enemyData.Add(new EnemyData
                 {
                     Prefab = GetEntity(enemy.Prefab, TransformUsageFlags.None),
-                    PrefabID = enemy.VisualsPrefab.GetInstanceID(),
+                    Tag = tag,
                     SpawnLevel = enemy.SpawnLevel,
                     Health = enemy.Health,
                     Damage = enemy.Damage,

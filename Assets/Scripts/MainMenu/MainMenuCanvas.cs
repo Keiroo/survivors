@@ -21,7 +21,7 @@ namespace Survivors
             Content.anchoredPosition = new Vector2(0f, -200f);
             sequence.AppendInterval(1f);
             sequence.Append(Title.DOAnchorPosY(0f, 1f).SetEase(Ease.OutCubic));
-            sequence.Insert(2.5f, Content.DOAnchorPosY(0f, 1f).SetEase(Ease.OutCubic));
+            sequence.Append(Content.DOAnchorPosY(0f, 1f).SetEase(Ease.OutCubic));
 
             if (VolumeSlider == null) return;
             VolumeSlider.value = GameManager.BackgroundMusicVolume;

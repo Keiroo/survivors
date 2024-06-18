@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 3458103686054216442}
   m_Layer: 6
   m_Name: DogEntity
-  m_TagString: Untagged
+  m_TagString: Dog
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

@@ -47,7 +47,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MoveSpeed: 1
-  ShootCooldown: 0.02
+  ShootCooldown: 0.005
   BulletPrefab: {fileID: 1083862140788330030, guid: bb7391c2af442b441b57bb72a039e42f, type: 3}
 --- !u!65 &2554192209869986975
 BoxCollider:

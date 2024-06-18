@@ -29,7 +29,7 @@ namespace Survivors
             {
                 if (!entityManager.HasComponent<VisualsReferenceComponent>(entity))
                 {
-                    var targetVisual = animationPrefabs.Enemies.FirstOrDefault(x => x.GetInstanceID() == enemyComponent.PrefabID);
+                    var targetVisual = animationPrefabs.Enemies.FirstOrDefault(x => x.CompareTag(enemyComponent.Tag.ToString()));
                     var enemyVisuals = Object.Instantiate(targetVisual, Vector3.one * 1000, Quaternion.identity);
                     
                     buffer.AddComponent(entity, new VisualsReferenceComponent { GameObject = enemyVisuals });
