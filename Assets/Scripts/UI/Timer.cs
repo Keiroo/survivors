@@ -23,8 +23,11 @@ namespace Survivors
 
         private void UpdateTimer()
         {
-            var seconds = (DateTime.Now - startTime).Seconds;
-            textMeshProUGUI.text = $"{seconds / 60:00}:{seconds % 60:00}";
+            var timeElapsed = DateTime.Now - startTime;
+            // var minutes = (DateTime.Now - startTime).Minutes;
+            // var seconds = (DateTime.Now - startTime).Seconds;
+            // textMeshProUGUI.text = $"{seconds / 60:00}:{seconds % 60:00}";
+            textMeshProUGUI.text = $"{timeElapsed.Minutes:00}:{timeElapsed.Seconds % 60:00}";
         }
     }
 }

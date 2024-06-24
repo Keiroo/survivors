@@ -96,6 +96,34 @@ namespace Survivors
                     ""isPartOfComposite"": true
                 }
             ]
+        },
+        {
+            ""name"": ""Debug"",
+            ""id"": ""d0d25ff7-c6d8-4075-8999-59f91148f4e7"",
+            ""actions"": [
+                {
+                    ""name"": ""FpsCounterShow"",
+                    ""type"": ""Button"",
+                    ""id"": ""8237cedd-7c68-4804-99a8-4c0451cd15df"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""5d9e3d59-94a7-4621-9ef0-50861836fada"",
+                    ""path"": ""<Keyboard>/f1"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Default"",
+                    ""action"": ""FpsCounterShow"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": [
@@ -109,6 +137,9 @@ namespace Survivors
             // Player
             m_Player = asset.FindActionMap("Player", throwIfNotFound: true);
             m_Player_Move = m_Player.FindAction("Move", throwIfNotFound: true);
+            // Debug
+            m_Debug = asset.FindActionMap("Debug", throwIfNotFound: true);
+            m_Debug_FpsCounterShow = m_Debug.FindAction("FpsCounterShow", throwIfNotFound: true);
         }
 
         public void Dispose()
@@ -212,6 +243,52 @@ namespace Survivors
             }
         }
         public PlayerActions @Player => new PlayerActions(this);
+
+        // Debug
+        private readonly InputActionMap m_Debug;
+        private List<IDebugActions> m_DebugActionsCallbackInterfaces = new List<IDebugActions>();
+        private readonly InputAction m_Debug_FpsCounterShow;
+        public struct DebugActions
+        {
+            private @SurvivorsControls m_Wrapper;
+            public DebugActions(@SurvivorsControls wrapper) { m_Wrapper = wrapper; }
+            public InputAction @FpsCounterShow => m_Wrapper.m_Debug_FpsCounterShow;
+            public InputActionMap Get() { return m_Wrapper.m_Debug; }
+            public void Enable() { Get().Enable(); }
+            public void Disable() { Get().Disable(); }
+            public bool enabled => Get().enabled;
+            public static implicit operator InputActionMap(DebugActions set) { return set.Get(); }
+            public void AddCallbacks(IDebugActions instance)
+            {
+                if (instance == null || m_Wrapper.m_DebugActionsCallbackInterfaces.Contains(instance)) return;
+                m_Wrapper.m_DebugActionsCallbackInterfaces.Add(instance);
+                @FpsCounterShow.started += instance.OnFpsCounterShow;
+                @FpsCounterShow.performed += instance.OnFpsCounterShow;
+                @FpsCounterShow.canceled += instance.OnFpsCounterShow;
+            }
+
+            private void UnregisterCallbacks(IDebugActions instance)
+            {
+                @FpsCounterShow.started -= instance.OnFpsCounterShow;
+                @FpsCounterShow.performed -= instance.OnFpsCounterShow;
+                @FpsCounterShow.canceled -= instance.OnFpsCounterShow;
+            }
+
+            public void RemoveCallbacks(IDebugActions instance)
+            {
+                if (m_Wrapper.m_DebugActionsCallbackInterfaces.Remove(instance))
+                    UnregisterCallbacks(instance);
+            }
+
+            public void SetCallbacks(IDebugActions instance)
+            {
+                foreach (var item in m_Wrapper.m_DebugActionsCallbackInterfaces)
+                    UnregisterCallbacks(item);
+                m_Wrapper.m_DebugActionsCallbackInterfaces.Clear();
+                AddCallbacks(instance);
+            }
+        }
+        public DebugActions @Debug => new DebugActions(this);
         private int m_DefaultSchemeIndex = -1;
         public InputControlScheme DefaultScheme
         {
@@ -224,6 +301,10 @@ namespace Survivors
         public interface IPlayerActions
         {
             void OnMove(InputAction.CallbackContext context);
+        }
+        public interface IDebugActions
+        {
+            void OnFpsCounterShow(InputAction.CallbackContext context);
         }
     }
 }

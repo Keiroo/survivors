@@ -1,10 +1,10 @@
 using System.Collections.Generic;
 using Unity.Burst;
 using Unity.Entities;
-using Unity.Jobs;
 using Unity.Mathematics;
 using Unity.Transforms;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using Random = Unity.Mathematics.Random;
 
 namespace Survivors
@@ -28,6 +28,9 @@ namespace Survivors
         [BurstCompile]
         protected override void OnUpdate()
         {
+            if (SceneManager.GetActiveScene().buildIndex != 1)
+                return;
+
             if (!SystemAPI.TryGetSingletonEntity<EnemySpawnerComponent>(out enemySpawnerEntity))
                 return;
 
@@ -35,7 +38,8 @@ namespace Survivors
             enemyListComponent = EntityManager.GetComponentObject<EnemyListComponent>(enemySpawnerEntity);
 
             if (SystemAPI.Time.ElapsedTime > nextSpawnTime)
-                SpawnEnemy();
+            for (int i = 0; i < enemySpawnerComponent.SpawnsPerCycle; i++)
+                    SpawnEnemy();
         }
 
         private void SpawnEnemy()
@@ -47,7 +51,7 @@ namespace Survivors
                 if (enemy.SpawnLevel == level)
                     availableEnemies.Add(enemy);
 
-            var index = 0;
+            var index = random.NextInt(0, availableEnemies.Count);
             var newEnemy = EntityManager.Instantiate(availableEnemies[index].Prefab);
             EntityManager.SetComponentData(newEnemy, new LocalTransform
             {
@@ -57,7 +61,7 @@ namespace Survivors
             });
             EntityManager.AddComponentData(newEnemy, new EnemyComponent 
             {
-                PrefabID = availableEnemies[index].PrefabID,
+                Tag = availableEnemies[index].Tag,
                 CurrentHealth = availableEnemies[index].Health,
                 MoveSpeed = availableEnemies[index].MoveSpeed,
                 Damage = availableEnemies[index].Damage

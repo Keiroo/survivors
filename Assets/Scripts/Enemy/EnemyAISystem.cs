@@ -4,6 +4,7 @@ using Unity.Jobs;
 using Unity.Mathematics;
 using Unity.Transforms;
 using Unity.Burst;
+using UnityEngine.SceneManagement;
 
 namespace Survivors
 {
@@ -24,8 +25,12 @@ namespace Survivors
         [BurstCompile]
         private void OnUpdate(ref SystemState state)
         {
+            if (SceneManager.GetActiveScene().buildIndex != 1)
+                return;
+                
             var entityManager = state.EntityManager;
-            var playerEntity = SystemAPI.GetSingletonEntity<PlayerComponent>();
+            if (!SystemAPI.TryGetSingletonEntity<PlayerComponent>(out var playerEntity))
+                return;
 
             var entitiesArray = entitiesQuery.ToEntityArray(Allocator.TempJob);
             var buffers = new NativeArray<EntityCommandBuffer>(entitiesArray.Length, Allocator.TempJob);

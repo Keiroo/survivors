@@ -2,6 +2,7 @@ using Unity.Collections;
 using Unity.Entities;
 using Unity.Transforms;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace Survivors
 {
@@ -17,6 +18,9 @@ namespace Survivors
 
         private void OnUpdate(ref SystemState state)
         {
+            if (SceneManager.GetActiveScene().buildIndex != 1)
+                return;
+                
             if (!SystemAPI.ManagedAPI.TryGetSingleton(out AnimationPrefabsComponent animationPrefabs))
                 return;
 
