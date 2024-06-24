@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1f1aea42923139e4f8ccdabea23e8c74, type: 3}
+  m_Name: Bear
+  m_EditorClassIdentifier: 
+  Prefab: {fileID: 3626278952745196826, guid: d06e7c706d70b384da6f5d8daa760d77, type: 3}
+  VisualsPrefab: {fileID: 6767437212261410434, guid: b97e86dc96371b941b5570766e21a614, type: 3}
+  SpawnLevel: 0
+  Health: 5
+  Damage: 1
+  MoveSpeed: 0.4
