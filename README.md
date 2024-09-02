@@ -9,3 +9,8 @@ Use arrow keys to move character.
 <br>
 <br>
 ![alt](Assets/BuildAssets/gameplay.gif)
+<br>
+<br>
+Youtube video below:
+<br>
+[![Youtube Video](https://img.youtube.com/vi/qUV11dQUauE/0.jpg)](https://www.youtube.com/watch?v=qUV11dQUauE)
